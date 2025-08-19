@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { useAuth } from "@/contexts/auth-context"
 
 interface FormData {
   clientEmail: string
@@ -20,14 +20,9 @@ interface FormData {
   priority: string
 }
 
-interface Attendant {
-  id: string
-  atendente: string
-  username: string
-}
-
 export default function Level1Form() {
   const supabase = createClient()
+  const { user } = useAuth()
   const [formData, setFormData] = useState<FormData>({
     clientEmail: "",
     brokerLink: "",
@@ -36,30 +31,15 @@ export default function Level1Form() {
     priority: "",
   })
 
-  const [attendants, setAttendants] = useState<Attendant[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
-    fetchAttendants()
-  }, [])
-
-  const fetchAttendants = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('id, atendente, username')
-        .eq('is_active', true)
-        .eq('level1_access', true)
-        .order('atendente')
-
-      if (error) throw error
-      setAttendants(data || [])
-    } catch (error) {
-      console.error('Erro ao buscar atendentes:', error)
+    if (user?.atendente) {
+      setFormData((prev) => ({ ...prev, attendant: user.atendente }))
     }
-  }
+  }, [user])
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -72,11 +52,15 @@ export default function Level1Form() {
     setErrorMessage("")
 
     try {
+      if (!user?.atendente) {
+        throw new Error("Atendente não identificado. Faça login novamente.")
+      }
+
       const { error } = await supabase.from("tickets").insert([
         {
           client_email: formData.clientEmail,
           broker_link: formData.brokerLink,
-          attendant: formData.attendant,
+          attendant: user.atendente,
           description: formData.description,
           priority: formData.priority,
           status: "aberto",
@@ -91,7 +75,7 @@ export default function Level1Form() {
       setFormData({
         clientEmail: "",
         brokerLink: "",
-        attendant: "",
+        attendant: user.atendente || "",
         description: "",
         priority: "",
       })
@@ -156,20 +140,9 @@ export default function Level1Form() {
 
             <div className="space-y-2">
               <Label htmlFor="attendant" className="text-sm font-medium">
-                Atendente *
+                Atendente
               </Label>
-              <Select value={formData.attendant} onValueChange={(value) => handleInputChange("attendant", value)}>
-                <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Selecione o atendente" />
-                </SelectTrigger>
-                <SelectContent>
-                  {attendants.map((attendant) => (
-                    <SelectItem key={attendant.id} value={attendant.atendente}>
-                      {attendant.atendente}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input id="attendant" value={user?.atendente || ""} readOnly className="h-11" />
             </div>
 
             <div className="space-y-2">
