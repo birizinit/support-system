@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AlertCircle, Eye, EyeOff, Loader2 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
+import Link from "next/link"
 
 interface LoginFormProps {
   onSuccess: () => void
@@ -45,9 +46,9 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
       <CardHeader className="text-center pb-6">
         <div className="flex justify-center mb-4">
           <img 
-            src="/xcodetech-logo.png" 
-            alt="XCode Tech" 
-            className="h-12 w-auto"
+            src="/3b35bf84-d5f6-4a2d-b61c-9c8ff1b4c125.jpg" 
+            alt="Logo" 
+            className="h-12 w-auto rounded"
           />
         </div>
         <CardTitle className="text-2xl font-bold text-foreground">Login</CardTitle>
@@ -112,8 +113,13 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
             )}
           </Button>
         </form>
-
-        
+        <div className="mt-4">
+          <Link href="/">
+            <Button variant="outline" className="w-full h-11">
+              Voltar para Página Inicial
+            </Button>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   )
