@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Save, X, Mail, Calendar, Clock, UserCheck, Edit3 } from "lucide-react"
-import { supabase } from "@/lib/supabase/client"
+import { createClient } from "@/lib/supabase/client"
 import { formatDistanceToNow, format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
@@ -60,6 +60,7 @@ const categoryOptions = ["Hardware", "Software", "Rede", "Acesso", "Performance"
 const attendantOptions = ["Thiago", "Gabriel", "Carlos", "Vitor"]
 
 export default function TicketDetailModal({ ticket, isOpen, onClose, onUpdate }: TicketDetailModalProps) {
+  const supabase = createClient()
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [editedTicket, setEditedTicket] = useState<Ticket | null>(null)

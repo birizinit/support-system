@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react"
-import { supabase } from "@/lib/supabase/client"
+import { createClient } from "@/lib/supabase/client"
 
 interface FormData {
   clientEmail: string
@@ -27,6 +27,7 @@ interface Attendant {
 }
 
 export default function Level1Form() {
+  const supabase = createClient()
   const [formData, setFormData] = useState<FormData>({
     clientEmail: "",
     brokerLink: "",

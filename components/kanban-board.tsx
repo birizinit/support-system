@@ -7,12 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { RefreshCw, Clock, User, Mail, Calendar, GripVertical } from "lucide-react"
-import { supabase } from "@/lib/supabase/client"
+import { createClient } from "@/lib/supabase/client"
 import { formatDistanceToNow } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import TicketDetailModal from "./ticket-detail-modal"
 import ResolveTicketModal from "./resolve-ticket-modal"
-import { whatsappService } from "@/lib/whatsapp-service"
+// WhatsApp sending is now handled via server-only API route
 
 interface Ticket {
   id: string
@@ -51,6 +51,8 @@ export default function KanbanBoard() {
   const [isResolveModalOpen, setIsResolveModalOpen] = useState(false)
   const [ticketToResolve, setTicketToResolve] = useState<Ticket | null>(null)
   const [attendantPhones, setAttendantPhones] = useState<Record<string, string>>({})
+
+  const supabase = createClient()
 
   const fetchTickets = async () => {
     try {
@@ -221,10 +223,9 @@ export default function KanbanBoard() {
         ),
       )
 
-      // Enviar notificação WhatsApp se solicitado
+      // Enviar notificação WhatsApp via API server-only se solicitado
       if (sendWhatsApp && ticketToResolve.attendant) {
         try {
-          // Buscar dados do atendente
           const { data: attendantData } = await supabase
             .from('users')
             .select('telefone, whatsapp_enabled')
@@ -232,17 +233,20 @@ export default function KanbanBoard() {
             .single()
 
           if (attendantData?.telefone && attendantData?.whatsapp_enabled) {
-            await whatsappService.sendTicketResolutionNotification({
-              ticketId: ticketToResolve.id,
-              clientEmail: ticketToResolve.client_email,
-              attendantName: ticketToResolve.attendant,
-              resolution: observation,
-              phoneNumber: attendantData.telefone
+            await fetch('/api/whatsapp/send', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                ticketId: ticketToResolve.id,
+                clientEmail: ticketToResolve.client_email,
+                attendantName: ticketToResolve.attendant,
+                resolution: observation,
+                phoneNumber: attendantData.telefone,
+              }),
             })
           }
         } catch (whatsappError) {
           console.error('Error sending WhatsApp notification:', whatsappError)
-          // Não falha o processo se o WhatsApp der erro
         }
       }
 

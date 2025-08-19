@@ -1,3 +1,4 @@
+import 'server-only'
 import axios from 'axios'
 
 interface WhatsAppConfig {
@@ -16,9 +17,9 @@ class WhatsAppService {
 
   constructor() {
     this.config = {
-      baseUrl: 'https://evolution-api-production-fd51.up.railway.app',
-      instance: 'biri',
-      apiKey: '5d05e417461294bd322a06ae0e53e5a6'
+      baseUrl: process.env.WHATSAPP_BASE_URL || '',
+      instance: process.env.WHATSAPP_INSTANCE || '',
+      apiKey: process.env.WHATSAPP_API_KEY || ''
     }
   }
 
@@ -28,6 +29,10 @@ class WhatsAppService {
 
       // Formatar número (remover caracteres especiais e adicionar código do país se necessário)
       const formattedNumber = this.formatPhoneNumber(number)
+
+      if (!this.config.baseUrl || !this.config.instance || !this.config.apiKey) {
+        throw new Error('WhatsApp API configuration is missing. Please set WHATSAPP_BASE_URL, WHATSAPP_INSTANCE and WHATSAPP_API_KEY')
+      }
 
       const response = await axios.post(
         `${this.config.baseUrl}/message/sendText/${this.config.instance}`,
@@ -39,7 +44,8 @@ class WhatsAppService {
           headers: {
             'apikey': this.config.apiKey,
             'Content-Type': 'application/json'
-          }
+          },
+          timeout: 10000,
         }
       )
 

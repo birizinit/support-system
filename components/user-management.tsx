@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AlertCircle, Plus, Edit, Trash2, Save, X, Eye, EyeOff, MessageCircle } from "lucide-react"
-import { supabase } from "@/lib/supabase/client"
+import { createClient } from "@/lib/supabase/client"
 import { hashPassword } from "@/lib/auth-utils"
 
 interface User {
@@ -36,6 +36,7 @@ interface UserForm {
 }
 
 export default function UserManagement() {
+  const supabase = createClient()
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
