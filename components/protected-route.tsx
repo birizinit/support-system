@@ -68,13 +68,13 @@ export default function ProtectedRoute({
         <div className="text-center max-w-md">
           <div className="mb-6">
             <img 
-              src="/xcodetech-logo.png" 
-              alt="XCode Tech" 
-              className="h-16 w-auto mx-auto mb-4"
+              src="/3b35bf84-d5f6-4a2d-b61c-9c8ff1b4c125.jpg" 
+              alt="Logo" 
+              className="h-16 w-auto mx-auto mb-4 rounded"
             />
           </div>
           
-                     <h1 className="text-2xl font-bold text-foreground mb-4">Acesso Negado</h1>
+                   <h1 className="text-2xl font-bold text-foreground mb-4">Acesso Negado</h1>
            <p className="text-muted-foreground mb-6">
              Você não tem permissão para acessar esta área. 
              Esta área requer nível {requiredLevel}.
@@ -111,12 +111,12 @@ export default function ProtectedRoute({
             <div className="flex items-center gap-4">
               <a href="/" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
                 <img 
-                  src="/xcodetech-logo.png" 
-                  alt="XCode Tech" 
-                  className="h-8 w-auto"
+                  src="/3b35bf84-d5f6-4a2d-b61c-9c8ff1b4c125.jpg" 
+                  alt="Logo" 
+                  className="h-8 w-auto rounded"
                 />
               </a>
-                             <div className="text-sm text-muted-foreground">
+                           <div className="text-sm text-muted-foreground">
                  Logado como: <span className="font-medium text-foreground">{user.atendente}</span>
                  <span className="mx-2">•</span>
                  Usuário: <span className="font-medium text-foreground">{user.username}</span>
