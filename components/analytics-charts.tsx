@@ -81,11 +81,11 @@ export function AnalyticsCharts({
   }
 
   const statusColors = {
-    Aberto: "#3b82f6", // blue-500
-    "Em andamento": "#f97316", // orange-500
-    Aguardando: "#eab308", // yellow-500
-    Resolvido: "#10b981", // emerald-500
-    Fechado: "#6b7280", // gray-500
+    Aberto: "hsl(var(--chart-1))",
+    "Em andamento": "hsl(var(--chart-3))",
+    Aguardando: "hsl(var(--chart-4))",
+    Resolvido: "hsl(var(--chart-2))",
+    Fechado: "#6b7280",
   }
 
   const chartConfig = {
