@@ -51,12 +51,12 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto text-center">
-          {/* XCode Tech Logo */}
+          {/* Logo */}
           <div className="flex justify-center mb-8">
             <div className="bg-white rounded-lg p-4 shadow-lg">
               <img 
-                src="/xcodetech-logo.png" 
-                alt="XCode Tech" 
+                src="/3b35bf84-d5f6-4a2d-b61c-9c8ff1b4c125.jpg" 
+                alt="Logo" 
                 className="h-16 w-auto"
               />
             </div>
