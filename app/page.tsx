@@ -63,7 +63,7 @@ export default function HomePage() {
           </div>
           
           <h1 className="text-4xl font-bold text-foreground mb-4">Sistema de Suporte Técnico</h1>
-          <p className="text-xl text-muted-foreground mb-2">Powered by XCode Tech</p>
+          <p className="text-xl text-muted-foreground mb-2">Powered by Connectask </p>
           <p className="text-lg text-muted-foreground mb-12">Escolha seu nível de acesso para continuar</p>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
