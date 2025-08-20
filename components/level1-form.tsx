@@ -133,7 +133,7 @@ export default function Level1Form() {
                 type="text"
                 value={formData.brokerLink}
                 onChange={(e) => handleInputChange("brokerLink", e.target.value)}
-                placeholder="Ex.: XP Investimentos"
+                placeholder="Ex.: Nome da Broker"
                 className="h-11"
               />
             </div>
