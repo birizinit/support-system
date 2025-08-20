@@ -263,17 +263,10 @@ export default function TicketDetailModal({ ticket, isOpen, onClose, onUpdate }:
 
                 {ticket.broker_link && (
                   <div className="flex items-start gap-2">
-                    <span className="text-sm">🔗</span>
+                    <span className="text-sm">🏦</span>
                     <div>
-                      <p className="text-xs text-muted-foreground">Link do Broker</p>
-                      <a
-                        href={ticket.broker_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-blue-600 hover:text-blue-800 underline break-all"
-                      >
-                        {ticket.broker_link}
-                      </a>
+                      <p className="text-xs text-muted-foreground">Broker</p>
+                      <span className="text-sm break-all">{ticket.broker_link}</span>
                     </div>
                   </div>
                 )}
