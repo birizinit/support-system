@@ -74,7 +74,7 @@ class WhatsAppService {
 
   async sendTicketResolutionNotification(data: {
     ticketId: string
-    clientEmail: string
+    clientEmail?: string
     attendantName: string
     resolution: string
     phoneNumber: string
@@ -88,7 +88,7 @@ class WhatsAppService {
 
   private formatResolutionMessage(data: {
     ticketId: string
-    clientEmail: string
+    clientEmail?: string
     attendantName: string
     resolution: string
   }): string {
@@ -101,12 +101,13 @@ class WhatsAppService {
       minute: '2-digit'
     })
 
+    const clientLine = data.clientEmail ? `📧 *Cliente:* ${data.clientEmail}\n` : ''
+
     return `🎉 *Sistema de Suporte*
 
 Chamado *#${ticketShortId}* foi encerrado com sucesso!
 
-📧 *Cliente:* ${data.clientEmail}
-👤 *Atendente:* ${data.attendantName}
+${clientLine}👤 *Atendente:* ${data.attendantName}
 ✅ *Solução:* ${data.resolution}
 📅 *Data:* ${currentDate}
 

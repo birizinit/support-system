@@ -112,29 +112,28 @@ export default function Level1Form() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="clientEmail" className="text-sm font-medium">
-                Email do Cliente *
+                Email do Cliente
               </Label>
               <Input
                 id="clientEmail"
                 type="email"
                 value={formData.clientEmail}
                 onChange={(e) => handleInputChange("clientEmail", e.target.value)}
-                placeholder="cliente@email.com"
-                required
+                placeholder="cliente@email.com (opcional)"
                 className="h-11"
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="brokerLink" className="text-sm font-medium">
-                Link do Broker
+                Nome da Broker
               </Label>
               <Input
                 id="brokerLink"
-                type="url"
+                type="text"
                 value={formData.brokerLink}
                 onChange={(e) => handleInputChange("brokerLink", e.target.value)}
-                placeholder="https://broker.exemplo.com"
+                placeholder="Ex.: XP Investimentos"
                 className="h-11"
               />
             </div>

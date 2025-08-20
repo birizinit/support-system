@@ -364,16 +364,8 @@ export default function KanbanBoard() {
                             </div>
                             {ticket.broker_link && (
                               <div className="flex items-center gap-2">
-                                <span className="text-xs">🔗</span>
-                                <a
-                                  href={ticket.broker_link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 hover:underline truncate"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  Link do Broker
-                                </a>
+                                <span className="text-xs">🏦</span>
+                                <span className="truncate">Broker: {ticket.broker_link}</span>
                               </div>
                             )}
                             <div className="flex items-center gap-2 pt-1 border-t">
