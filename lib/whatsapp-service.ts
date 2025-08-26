@@ -58,18 +58,9 @@ class WhatsAppService {
   }
 
   private formatPhoneNumber(phone: string): string {
-    // Remove caracteres especiais e espaços
-    let formatted = phone.replace(/[\s\-\(\)\.]/g, '')
-
-    // Se não tem código do país, adiciona 55 (Brasil)
-    if (!formatted.startsWith('55')) {
-      formatted = '55' + formatted
-    }
-
-    // Remove qualquer + se existir
-    formatted = formatted.replace('+', '')
-
-    return formatted
+    // Mantém apenas dígitos; não força código do país
+    const digitsOnly = phone.replace(/\D/g, '')
+    return digitsOnly
   }
 
   async sendTicketResolutionNotification(data: {
