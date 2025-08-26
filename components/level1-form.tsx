@@ -19,6 +19,7 @@ interface FormData {
   attendant: string
   description: string
   priority: string
+  attachmentFile?: File | null
 }
 
 export default function Level1Form() {
@@ -30,6 +31,7 @@ export default function Level1Form() {
     attendant: "",
     description: "",
     priority: "",
+    attachmentFile: null,
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -56,6 +58,37 @@ export default function Level1Form() {
       if (!user?.atendente) {
         throw new Error("Atendente não identificado. Faça login novamente.")
       }
+      
+      // Upload de anexo se houver
+      let uploadedUrl: string | null = null
+      if (formData.attachmentFile) {
+        const file = formData.attachmentFile
+        const allowed = [
+          'application/pdf',
+          'image/jpeg',
+          'image/jpg',
+          'image/png',
+        ]
+        if (!allowed.includes(file.type)) {
+          throw new Error('Formato de arquivo não suportado. Use PDF, JPG, JPEG ou PNG.')
+        }
+
+        const ext = file.name.split('.').pop()?.toLowerCase() || 'bin'
+        const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+        const path = `tickets/${fileName}`
+
+        const { data: storageData, error: storageError } = await supabase.storage
+          .from('attachments')
+          .upload(path, file, { cacheControl: '3600', upsert: false })
+
+        if (storageError) throw storageError
+
+        const { data: publicData } = supabase.storage
+          .from('attachments')
+          .getPublicUrl(storageData.path)
+
+        uploadedUrl = publicData.publicUrl
+      }
 
       const { error } = await supabase.from("tickets").insert([
         {
@@ -65,6 +98,7 @@ export default function Level1Form() {
           description: formData.description,
           priority: formData.priority,
           status: "aberto",
+          attachment_url: uploadedUrl,
         },
       ])
 
@@ -79,6 +113,7 @@ export default function Level1Form() {
         attendant: user.atendente || "",
         description: "",
         priority: "",
+        attachmentFile: null,
       })
     } catch (error: any) {
       setSubmitStatus("error")
@@ -176,6 +211,22 @@ export default function Level1Form() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+          
+            <div className="space-y-2">
+            <Label htmlFor="attachment" className="text-sm font-medium">
+              Anexo (PDF, JPG, JPEG, PNG)
+            </Label>
+            <Input
+              id="attachment"
+              type="file"
+              accept=".pdf,image/jpeg,image/jpg,image/png"
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null
+                setFormData((prev) => ({ ...prev, attachmentFile: file }))
+              }}
+              className="h-11"
+            />
           </div>
 
           <Button type="submit" disabled={isSubmitting} className="w-full h-12 text-base font-medium">
