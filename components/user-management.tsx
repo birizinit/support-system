@@ -271,9 +271,15 @@ export default function UserManagement() {
                   <Input
                     id="telefone"
                     value={formData.telefone}
-                    onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
-                    placeholder="(11) 99999-9999"
+                   onChange={(e) => {
+                      const digitsOnly = e.target.value.replace(/\D/g, '')
+                      setFormData({ ...formData, telefone: digitsOnly })
+                    }}
+                    placeholder="Ex.: 5511940144886"
                   />
+                  <p className="text-xs text-muted-foreground">
+                    Informe o número completo com DDI e DDD, apenas números (ex: 5511940144886)
+                  </p>
                 </div>
 
                 <div className="space-y-2">
