@@ -77,6 +77,15 @@ export default function Level1Form() {
         const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
         const path = `tickets/${fileName}`
 
+        // Garante que o bucket exista (servidor cria se necessário)
+        try {
+          await fetch('/api/storage/ensure-bucket', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ bucket: 'attachments' }),
+          })
+        } catch {}
+
         const { data: storageData, error: storageError } = await supabase.storage
           .from('attachments')
           .upload(path, file, { cacheControl: '3600', upsert: false })
