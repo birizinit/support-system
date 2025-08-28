@@ -18,7 +18,7 @@ interface Ticket {
   id: string
   description: string
   priority: "baixa" | "media" | "alta" | "critica"
-  status: "aberto" | "em_andamento" | "resolvido"
+  status: "aberto" | "em_analise" | "em_andamento" | "resolvido"
   client_email: string
   broker_link?: string
   attendant: string
@@ -44,6 +44,7 @@ const priorityColors = {
 
 const statusOptions = [
   { value: "aberto", label: "Aberto" },
+  { value: "em_analise", label: "Em Análise" },
   { value: "em_andamento", label: "Em Andamento" },
   { value: "resolvido", label: "Resolvido" },
 ]
