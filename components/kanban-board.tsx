@@ -18,7 +18,7 @@ interface Ticket {
   id: string
   description: string
   priority: "baixa" | "media" | "alta" | "critica"
-  status: "aberto" | "em_andamento" | "resolvido"
+  status: "aberto" | "em_analise" | "em_andamento" | "resolvido"
   client_email: string
   broker_link?: string
   attendant: string
@@ -30,6 +30,7 @@ interface Ticket {
 
 const statusColumns = [
   { key: "aberto", title: "Aberto", color: "bg-red-50 border-red-200" },
+  { key: "em_analise", title: "Em Análise", color: "bg-purple-50 border-purple-200" },
   { key: "em_andamento", title: "Em Andamento", color: "bg-blue-50 border-blue-200" },
   { key: "resolvido", title: "Resolvido", color: "bg-green-50 border-green-200" },
 ]
@@ -296,7 +297,7 @@ export default function KanbanBoard() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[600px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[600px]">
           {statusColumns.map((column) => {
             const columnTickets = getTicketsByStatus(column.key)
             const isDragOver = dragOverColumn === column.key
